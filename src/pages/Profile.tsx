@@ -13,6 +13,7 @@ export const Profile = () => {
     // Modal state
     const [isVerifyOpen, setIsVerifyOpen] = useState(false);
     const [verifyStep, setVerifyStep] = useState<1 | 2>(1);
+    const [verificationStatus, setVerificationStatus] = useState<'Unverified' | 'Pending'>('Unverified');
     
     // Discord state
     const [discordUser, setDiscordUser] = useState('');
@@ -87,20 +88,35 @@ export const Profile = () => {
                                 <h3 className="text-xl font-semibold flex items-center gap-2">
                                     Verification Status
                                 </h3>
-                                <div 
-                                    onClick={() => { setVerifyStep(1); setShowCode(false); setIsVerifyOpen(true); }}
-                                    className="cursor-pointer text-xs font-mono font-medium rounded-full bg-white/10 hover:bg-white/20 transition-colors text-white px-3 py-1 ml-2 flex items-center gap-2"
-                                >
-                                    Unverified
-                                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+                                {verificationStatus === 'Unverified' ? (
+                                    <div 
+                                        onClick={() => { setVerifyStep(1); setShowCode(false); setIsVerifyOpen(true); }}
+                                        className="cursor-pointer text-xs font-mono font-medium rounded-full bg-red-500/10 hover:bg-red-500/20 transition-colors text-red-500 px-3 py-1 ml-2 flex items-center gap-2"
+                                    >
+                                        Unverified
+                                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m15 9-6 6"/><path d="m9 9 6 6"/></svg>
+                                    </div>
+                                ) : (
+                                    <div className="text-xs font-mono font-medium rounded-full bg-yellow-500/20 text-yellow-500 px-3 py-1 ml-2 flex items-center gap-2">
+                                        Pending Review
+                                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                                    </div>
+                                )}
+                            </div>
+                            
+                            {verificationStatus === 'Unverified' ? (
+                                <div className="p-6 rounded-[20px] bg-red-500/5 border border-red-500/20 border-dashed flex flex-col items-center justify-center text-center">
+                                    <p className="text-red-500/60 font-medium mb-4">You must complete your platform verification before joining premium campaigns.</p>
+                                    <Button variant="outline" className="border-red-500/30 text-red-500 hover:bg-red-500/10" size="sm" onClick={() => { setVerifyStep(1); setShowCode(false); setIsVerifyOpen(true); }}>
+                                        Start Verification
+                                    </Button>
                                 </div>
-                            </div>
-                            <div className="p-6 rounded-[20px] bg-[#0A0A0A] border border-white/10 border-dashed flex flex-col items-center justify-center text-center">
-                                <p className="text-white/40 text-sm mb-4">You must complete your platform verification before joining premium campaigns.</p>
-                                <Button variant="outline" size="sm" onClick={() => { setVerifyStep(1); setShowCode(false); setIsVerifyOpen(true); }}>
-                                    Start Verification
-                                </Button>
-                            </div>
+                            ) : (
+                                <div className="p-6 rounded-[20px] bg-yellow-500/5 border border-yellow-500/20 flex flex-col items-start text-left">
+                                    <p className="text-yellow-500/80 font-medium mb-1">Verification Submitted</p>
+                                    <p className="text-white/50 text-sm">Our system is automatically verifying your Discord role and Social Bio code. Check back in a few minutes.</p>
+                                </div>
+                            )}
                         </div>
 
                         <div className="space-y-6">
@@ -242,7 +258,7 @@ export const Profile = () => {
                                                 variant="primary" 
                                                 className="w-full"
                                                 onClick={() => {
-                                                    alert("Verification submitted! Pending review.");
+                                                    setVerificationStatus('Pending');
                                                     setIsVerifyOpen(false);
                                                 }}
                                             >

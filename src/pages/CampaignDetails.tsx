@@ -16,7 +16,7 @@ export const CampaignDetails = () => {
     viewProgress: id === 'c1' ? '28,805,919 / 45,335,000 (64%)' : '0 / 9,000,000 (0%)',
     minViewsForPayout: '10,000 views',
     timeLeft: '10 days',
-    title: id === 'c1' ? 'Summer Skincare Launch' : 'Minimalist Desk Setup',
+    title: id === 'c1' ? 'Test Verified' : 'Test Not Verified',
     brand: id === 'c1' ? 'GlowRecipe' : 'Grovemade',
   };
 

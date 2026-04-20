@@ -27,37 +27,39 @@ export const AdminCampaigns = () => {
             </div>
 
             <div className="bg-[#0A0A0A] border border-white/5 rounded-[24px] overflow-hidden">
-                <table className="w-full text-left border-collapse">
-                    <thead>
-                        <tr className="border-b border-white/10 text-white/50 text-sm font-medium">
-                            <th className="px-6 py-4 font-normal">Campaign Title</th>
-                            <th className="px-6 py-4 font-normal">Brand</th>
-                            <th className="px-6 py-4 font-normal">CPM</th>
-                            <th className="px-6 py-4 font-normal">Budget</th>
-                            <th className="px-6 py-4 font-normal">Status</th>
-                            <th className="px-6 py-4 font-normal text-right">Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody className="divide-y divide-white/5">
-                        {campaigns.map((camp) => (
-                            <tr key={camp.id} className="hover:bg-white/5 transition-colors">
-                                <td className="px-6 py-4 font-medium">{camp.title}</td>
-                                <td className="px-6 py-4 text-white/70">{camp.brand}</td>
-                                <td className="px-6 py-4 font-mono tabular-metrics">{camp.cpm}</td>
-                                <td className="px-6 py-4 font-mono tabular-metrics">
-                                    <div className="flex flex-col">
-                                        <span>{camp.budget}</span>
-                                        <span className="text-xs text-white/40">{camp.used} used</span>
-                                    </div>
-                                </td>
-                                <td className="px-6 py-4"><Badge status={camp.status} /></td>
-                                <td className="px-6 py-4 text-right">
-                                    <Button variant="ghost" size="sm">Edit</Button>
-                                </td>
+                <div className="overflow-x-auto">
+                    <table className="w-full text-left border-collapse min-w-[800px]">
+                        <thead>
+                            <tr className="border-b border-white/10 text-white/50 text-sm font-medium whitespace-nowrap">
+                                <th className="px-6 py-4 font-normal">Campaign Title</th>
+                                <th className="px-6 py-4 font-normal">Brand</th>
+                                <th className="px-6 py-4 font-normal">CPM</th>
+                                <th className="px-6 py-4 font-normal">Budget</th>
+                                <th className="px-6 py-4 font-normal">Status</th>
+                                <th className="px-6 py-4 font-normal text-right">Actions</th>
                             </tr>
-                        ))}
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody className="divide-y divide-white/5">
+                            {campaigns.map((camp) => (
+                                <tr key={camp.id} className="hover:bg-white/5 transition-colors">
+                                    <td className="px-6 py-4 font-medium whitespace-nowrap">{camp.title}</td>
+                                    <td className="px-6 py-4 text-white/70 whitespace-nowrap">{camp.brand}</td>
+                                    <td className="px-6 py-4 font-mono tabular-metrics">{camp.cpm}</td>
+                                    <td className="px-6 py-4 font-mono tabular-metrics">
+                                        <div className="flex flex-col whitespace-nowrap">
+                                            <span>{camp.budget}</span>
+                                            <span className="text-xs text-white/40">{camp.used} used</span>
+                                        </div>
+                                    </td>
+                                    <td className="px-6 py-4"><Badge status={camp.status} /></td>
+                                    <td className="px-6 py-4 text-right">
+                                        <Button variant="ghost" size="sm">Edit</Button>
+                                    </td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </motion.div>
     );

@@ -7,7 +7,7 @@ import { Button } from '../components/ui/Button';
 const mockCampaigns = [
   {
     id: 'c1',
-    title: 'Summer Skincare Launch',
+    title: 'Test Verified',
     brand: 'GlowRecipe',
     cpmRate: 0.40,
     totalBudget: 18134,
@@ -16,7 +16,7 @@ const mockCampaigns = [
   },
   {
     id: 'c2',
-    title: 'Minimalist Desk Setup',
+    title: 'Test Not Verified',
     brand: 'Grovemade',
     cpmRate: 0.55,
     totalBudget: 5000,
