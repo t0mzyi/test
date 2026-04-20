@@ -2,6 +2,7 @@ import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { Badge } from '../components/ui/Badge';
 import { Button } from '../components/ui/Button';
+import { ArrowUpRight, DollarSign, Wallet } from 'lucide-react';
 
 // Mock data
 const mockCampaigns = [
@@ -47,11 +48,13 @@ export const CampaignsFeed = () => {
       initial={{ opacity: 0, y: 12 }}
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: -12 }}
-      transition={{ duration: 0.35, ease: 'easeOut' }}
-      className="space-y-8"
+      transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
+      className="space-y-6 pb-12"
     >
-      <div className="flex items-center justify-between">
-        <h1 className="text-3xl font-bold tracking-tight">Active Campaigns</h1>
+      <div className="pb-6 border-b border-white/[0.08] relative">
+        <div className="absolute top-1/2 left-0 -translate-y-1/2 w-64 h-24 bg-white/[0.02] blur-[80px] pointer-events-none rounded-full" />
+        <h1 className="text-3xl font-bold tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-white via-white/90 to-white/50 relative z-10">Active Campaigns</h1>
+        <p className="text-white/40 text-lg font-light tracking-tight mt-1.5 relative z-10">Discover marketing opportunities.</p>
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
@@ -60,45 +63,55 @@ export const CampaignsFeed = () => {
             to={`/campaigns/${campaign.id}`}
             key={campaign.id}
             layoutId={`card-${campaign.id}`}
-            whileHover={{ scale: 1.015, y: -3 }}
+            whileHover={{ y: -2 }}
             whileTap={{ scale: 0.98 }}
-            transition={{ type: "spring", stiffness: 300, damping: 22 }}
-            className="group relative p-6 rounded-[20px] bg-[#0A0A0A] border border-white/5 hover:border-white/10 transition-colors cursor-pointer block"
+            transition={{ type: "spring", stiffness: 400, damping: 25 }}
+            className="group relative p-6 rounded-3xl bg-white/[0.02] border border-white/[0.05] shadow-[inset_0_1px_1px_rgba(255,255,255,0.05)] hover:bg-white/[0.04] hover:border-white/10 transition-all cursor-pointer block overflow-hidden"
           >
-            <div className="flex items-start justify-between mb-4">
+            <div className="absolute inset-0 bg-gradient-to-br from-white/[0.01] to-transparent pointer-events-none" />
+            
+            <div className="flex items-start justify-between mb-5 relative z-10">
               <Badge status={campaign.status} />
-              <div className="text-white/40 group-hover:text-white/80 transition-colors">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+              <div className="w-10 h-10 rounded-full bg-white/[0.03] border border-white/5 flex items-center justify-center text-white/20 group-hover:text-white/60 transition-all duration-300">
+                <ArrowUpRight className="w-5 h-5" />
               </div>
             </div>
             
-            <div className="mb-6 mb-8">
-              <p className="text-sm text-white/50 mb-1">{campaign.brand}</p>
-              <h3 className="text-lg font-semibold leading-tight">{campaign.title}</h3>
+            <div className="mb-6 relative z-10">
+              <p className="text-xs text-white/40 font-semibold uppercase tracking-widest mb-1.5">{campaign.brand}</p>
+              <h3 className="text-xl font-semibold leading-tight tracking-tight text-white/90 group-hover:text-white transition-colors">{campaign.title}</h3>
             </div>
 
-            <div className="space-y-3 mb-6">
+            <div className="space-y-3 mb-6 relative z-10">
               <div className="flex justify-between items-center text-sm">
-                <span className="text-white/50">CPM Rate</span>
-                <span className="font-mono tabular-metrics font-medium text-white">{formatCurrency(campaign.cpmRate)}</span>
+                <div className="flex items-center gap-2 text-white/40">
+                  <DollarSign className="w-4 h-4" />
+                  <span>CPM</span>
+                </div>
+                <span className="font-mono tabular-metrics font-medium text-white/80">{formatCurrency(campaign.cpmRate)}</span>
               </div>
               <div className="flex justify-between items-center text-sm">
-                <span className="text-white/50">Budget Left</span>
-                <span className="font-mono tabular-metrics font-medium text-white">{formatCurrency(campaign.totalBudget - campaign.budgetUsed)}</span>
+                <div className="flex items-center gap-2 text-white/40">
+                  <Wallet className="w-4 h-4" />
+                  <span>Budget</span>
+                </div>
+                <span className="font-mono tabular-metrics font-medium text-white/80">{formatCurrency(campaign.totalBudget - campaign.budgetUsed)}</span>
               </div>
             </div>
 
-            <div className="w-full bg-white/10 h-1.5 rounded-full overflow-hidden mb-6">
-              <motion.div 
-                initial={{ width: 0 }}
-                animate={{ width: `${(campaign.budgetUsed / campaign.totalBudget) * 100}%` }}
-                transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
-                className="bg-white h-full"
-              />
+            <div className="relative z-10 mb-6">
+              <div className="w-full bg-white/[0.03] h-1.5 rounded-full overflow-hidden">
+                <motion.div 
+                  initial={{ width: 0 }}
+                  animate={{ width: `${(campaign.budgetUsed / campaign.totalBudget) * 100}%` }}
+                  transition={{ duration: 1.5, ease: [0.16, 1, 0.3, 1] }}
+                  className="bg-white/30 h-full rounded-full"
+                />
+              </div>
             </div>
             
-            <Button variant="secondary" className="w-full mt-2">
-              Join Campaign
+            <Button variant="secondary" className="w-full relative z-10 bg-white/5 border-white/5 hover:bg-white/10 hover:border-white/10 text-white/70 py-2 h-auto text-xs font-bold uppercase rounded-xl tracking-wider">
+              Details
             </Button>
           </MotionLink>
         ))}
