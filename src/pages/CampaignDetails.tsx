@@ -1,20 +1,33 @@
 import { motion } from 'framer-motion';
+import { useParams } from 'react-router-dom';
 import { Badge } from '../components/ui/Badge';
 import { Button } from '../components/ui/Button';
+import { useState } from 'react';
 
 export const CampaignDetails = () => {
+  const { id } = useParams();
+  
   // Mock data representing exact metrics
   const stats = {
     status: 'Active',
-    cpmRate: '$0.40',
-    totalBudget: '$18,134',
-    budgetUsed: '$11,468.46 (63%)',
-    viewProgress: '28,805,919 / 45,335,000 (64%)',
+    cpmRate: id === 'c1' ? '$0.40' : '$0.55',
+    totalBudget: id === 'c1' ? '$18,134' : '$5,000',
+    budgetUsed: id === 'c1' ? '$11,468.46 (63%)' : '$0.00 (0%)',
+    viewProgress: id === 'c1' ? '28,805,919 / 45,335,000 (64%)' : '0 / 9,000,000 (0%)',
     minViewsForPayout: '10,000 views',
     timeLeft: '10 days',
+    title: id === 'c1' ? 'Summer Skincare Launch' : 'Minimalist Desk Setup',
+    brand: id === 'c1' ? 'GlowRecipe' : 'Grovemade',
   };
 
-  const progressPercentage = 64;
+  const progressPercentage = id === 'c1' ? 64 : 0;
+  
+  // Scenario: c1 is for "Verified", c2 is "Verification Required"
+  const requiresVerification = id === 'c2';
+  const isUserVerified = false; // Mock user state
+
+  const [submissionUrl, setSubmissionUrl] = useState('');
+  const [platform, setPlatform] = useState('youtube');
 
   return (
     <motion.div
@@ -28,10 +41,10 @@ export const CampaignDetails = () => {
       <div className="flex flex-col md:flex-row md:items-end justify-between border-b border-white/10 pb-8 gap-6">
         <div>
           <div className="flex items-center gap-4 mb-4">
-            <h1 className="text-4xl md:text-5xl font-bold tracking-tight">Summer Skincare Launch</h1>
+            <h1 className="text-4xl md:text-5xl font-bold tracking-tight">{stats.title}</h1>
             <Badge status={stats.status} />
           </div>
-          <p className="text-lg text-white/50">GlowRecipe</p>
+          <p className="text-lg text-white/50">{stats.brand}</p>
         </div>
         <div className="text-left md:text-right">
           <p className="text-sm text-white/40 mb-1 uppercase tracking-widest">CPM Rate</p>
@@ -84,16 +97,59 @@ export const CampaignDetails = () => {
 
         {/* Action & Rules Zone */}
         <div className="space-y-8">
-            <div className="p-8 rounded-[24px] border border-white/10 bg-black relative overflow-hidden group">
-                <div className="absolute inset-0 bg-white/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                <h3 className="text-2xl font-bold mb-4 relative z-10">Participate</h3>
-                <p className="text-white/60 mb-8 relative z-10 leading-relaxed font-light">
-                    Join this campaign by submitting your short-form links. We support YouTube Shorts, TikToks, and Instagram Reels. Payouts are calculated algorithmically based on verifiable views.
-                </p>
-                <Button variant="primary" size="lg" className="w-full relative z-10 text-lg py-4">
-                    Join Campaign
-                </Button>
-            </div>
+            {requiresVerification && !isUserVerified ? (
+                <div className="p-8 rounded-[24px] border border-white/10 bg-[#0A0A0A] relative overflow-hidden group">
+                    <h3 className="text-2xl font-bold mb-4 relative z-10 flex items-center gap-2">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg>
+                        Verification Required
+                    </h3>
+                    <p className="text-white/60 mb-6 relative z-10 leading-relaxed font-light">
+                        This campaign requires a verified clipper account. Navigate to your profile to complete the verification checklist.
+                    </p>
+                    
+                    <div className="relative z-10">
+                        <motion.create(Link) to="/profile" className="w-full inline-flex items-center justify-center font-medium rounded-full transition-colors focus:outline-none bg-white text-black hover:bg-white/90 px-8 py-3.5 text-lg">
+                            Go to Verification
+                        </motion.create(Link)>
+                    </div>
+                </div>
+            ) : (
+                <div className="p-8 rounded-[24px] border border-white/10 bg-black relative overflow-hidden group">
+                    <div className="absolute inset-0 bg-white/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                    <h3 className="text-2xl font-bold mb-2 relative z-10">Submit Your Clip</h3>
+                    <p className="text-white/60 mb-6 relative z-10 leading-relaxed font-light">
+                        Paste your short URL below. Metrics will be tracked algorithmically.
+                    </p>
+                    
+                    <div className="space-y-4 relative z-10">
+                        <div>
+                            <label className="block text-sm text-white/50 mb-2">Platform</label>
+                            <select 
+                                value={platform}
+                                onChange={(e) => setPlatform(e.target.value)}
+                                className="w-full bg-[#0A0A0A] border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-white/30 transition-colors appearance-none"
+                            >
+                                <option value="youtube">YouTube Shorts</option>
+                                <option value="instagram">Instagram Reels</option>
+                                <option value="tiktok">TikTok</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label className="block text-sm text-white/50 mb-2">Video URL</label>
+                            <input 
+                                type="url" 
+                                value={submissionUrl}
+                                onChange={(e) => setSubmissionUrl(e.target.value)}
+                                placeholder="https://youtube.com/shorts/..." 
+                                className="w-full bg-[#0A0A0A] border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-white/30 transition-colors placeholder:text-white/30" 
+                            />
+                        </div>
+                        <Button variant="primary" size="lg" className="w-full relative z-10 text-lg py-4 mt-2">
+                            Submit Content
+                        </Button>
+                    </div>
+                </div>
+            )}
 
             <div className="p-8 rounded-[24px] bg-[#0A0A0A] border border-white/5">
                 <h3 className="text-lg font-semibold mb-6">Rules & Guidelines</h3>
