@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { useParams } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 import { Badge } from '../components/ui/Badge';
 import { Button } from '../components/ui/Button';
 import { useState } from 'react';
@@ -108,9 +108,9 @@ export const CampaignDetails = () => {
                     </p>
                     
                     <div className="relative z-10">
-                        <motion.create(Link) to="/profile" className="w-full inline-flex items-center justify-center font-medium rounded-full transition-colors focus:outline-none bg-white text-black hover:bg-white/90 px-8 py-3.5 text-lg">
+                        <Link to="/profile" className="w-full inline-flex items-center justify-center font-medium rounded-full transition-colors focus:outline-none bg-white text-black hover:bg-white/90 px-8 py-3.5 text-lg">
                             Go to Verification
-                        </motion.create(Link)>
+                        </Link>
                     </div>
                 </div>
             ) : (
