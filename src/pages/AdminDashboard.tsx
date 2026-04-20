@@ -102,7 +102,7 @@ export const AdminDashboard = () => {
                                     animationDuration={1000}
                                     animationEasing="ease-out"
                                 >
-                                    {mockBurnRate.map((entry, index) => (
+                                    {mockBurnRate.map((_, index) => (
                                         <Cell key={`cell-${index}`} fill="rgba(255,255,255,0.8)" />
                                     ))}
                                 </Bar>
